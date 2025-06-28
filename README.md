@@ -20,16 +20,6 @@ Uma calculadora online interativa para análise de Distorção Harmônica Total 
 - Frequência fundamental (padrão: 60 Hz)
 - Correntes harmônicas de 2ª a 10ª ordem
 
-## Como Usar
-
-1. **Abra o arquivo `index.html`** em qualquer navegador moderno
-2. **Insira os dados**:
-   - Corrente fundamental (ex: 100A)
-   - Frequência (ex: 60Hz)
-   - Valores das harmônicas desejadas
-3. **Os cálculos são automáticos** - os resultados e gráficos se atualizam em tempo real
-4. **Analise os gráficos** para entender o impacto das harmônicas
-
 ## Fórmulas Utilizadas
 
 ### THD
@@ -82,16 +72,6 @@ CF = I_pico / I_RMS
 - **Sem Dependências Externas**: Apenas CDN para Chart.js
 - **Compatibilidade**: Funciona em todos os navegadores modernos
 
-## Estrutura dos Arquivos
-
-```
-web-harmonicos/
-├── index.html      # Interface principal
-├── styles.css      # Estilos e layout
-├── script.js       # Lógica de cálculos e gráficos
-└── README.md       # Este arquivo
-```
-
 ## Funcionalidades Avançadas
 
 ### API JavaScript
@@ -110,11 +90,6 @@ THDCalculator.clear();
 // Exportar dados (se implementado)
 THDCalculator.export();
 ```
-
-### Personalização
-- Modifique as cores no arquivo `styles.css`
-- Ajuste as fórmulas no arquivo `script.js`
-- Adicione novas harmônicas editando o HTML e JavaScript
 
 ## Limitações
 
