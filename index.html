@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora THD de Corrente</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calculadora THD de Corrente</h1>
+            <p>Análise de Distorção Harmônica Total em Sistemas Elétricos</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Seção de Entrada de Dados -->
+            <section class="input-section">
+                <h2>Dados de Entrada</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="fundamental">Corrente Fundamental (A)</label>
+                        <input type="number" id="fundamental" value="100" step="0.1" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="frequency">Frequência Fundamental (Hz)</label>
+                        <input type="number" id="frequency" value="60" step="0.1" min="0">
+                    </div>
+                </div>
+                
+                <h3>Correntes Harmônicas</h3>
+                <div class="harmonics-grid">
+                    <div class="harmonic-input">
+                        <label for="h2">2ª Harmônica (A)</label>
+                        <input type="number" id="h2" value="0" step="0.1" min="0">
+                    </div>
+                    <div class="harmonic-input">
+                        <label for="h3">3ª Harmônica (A)</label>
+                        <input type="number" id="h3" value="0" step="0.1" min="0">
+                    </div>
+                    <div class="harmonic-input">
+                        <label for="h4">4ª Harmônica (A)</label>
+                        <input type="number" id="h4" value="0" step="0.1" min="0">
+                    </div>
+                    <div class="harmonic-input">
+                        <label for="h5">5ª Harmônica (A)</label>
+                        <input type="number" id="h5" value="0" step="0.1" min="0">
+                    </div>
+                    <div class="harmonic-input">
+                        <label for="h6">6ª Harmônica (A)</label>
+                        <input type="number" id="h6" value="0" step="0.1" min="0">
+                    </div>
+                    <div class="harmonic-input">
+                        <label for="h7">7ª Harmônica (A)</label>
+                        <input type="number" id="h7" value="0" step="0.1" min="0">
+                    </div>
+                    <div class="harmonic-input">
+                        <label for="h8">8ª Harmônica (A)</label>
+                        <input type="number" id="h8" value="0" step="0.1" min="0">
+                    </div>
+                    <div class="harmonic-input">
+                        <label for="h9">9ª Harmônica (A)</label>
+                        <input type="number" id="h9" value="0" step="0.1" min="0">
+                    </div>
+                    <div class="harmonic-input">
+                        <label for="h10">10ª Harmônica (A)</label>
+                        <input type="number" id="h10" value="0" step="0.1" min="0">
+                    </div>
+                </div>
+                
+                <button id="calculateBtn" class="calculate-btn">Calcular THD</button>
+            </section>
+
+            <!-- Seção de Resultados -->
+            <section class="results-section">
+                <h2>Resultados</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h3>THD (%)</h3>
+                        <div class="result-value" id="thdValue">0.00</div>
+                    </div>
+                    <div class="result-card">
+                        <h3>Corrente RMS (A)</h3>
+                        <div class="result-value" id="rmsValue">0.00</div>
+                    </div>
+                    <div class="result-card">
+                        <h3>Fator de Crista</h3>
+                        <div class="result-value" id="crestFactor">0.00</div>
+                    </div>
+                    <div class="result-card">
+                        <h3>Corrente de Pico (A)</h3>
+                        <div class="result-value" id="peakValue">0.00</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Gráficos -->
+            <section class="charts-section">
+                <h2>Análise Gráfica</h2>
+                
+                <!-- Gráfico de Harmônicas -->
+                <div class="chart-container">
+                    <h3>Contribuição das Harmônicas</h3>
+                    <canvas id="harmonicsChart"></canvas>
+                </div>
+
+                <!-- Gráfico de Formas de Onda -->
+                <div class="chart-container">
+                    <div class="line-width-form">
+                        <label for="lineWidthSelect"><strong>Espessura da Linha:</strong></label>
+                        <select id="lineWidthSelect">
+                            <option value="1.0" selected>1.0</option>
+                            <option value="1.1">1.1</option>
+                            <option value="1.2">1.2</option>
+                            <option value="1.3">1.3</option>
+                            <option value="1.4">1.4</option>
+                            <option value="1.5">1.5</option>
+                            <option value="1.6">1.6</option>
+                            <option value="1.7">1.7</option>
+                            <option value="1.8">1.8</option>
+                            <option value="1.9">1.9</option>
+                            <option value="2.0">2.0</option>
+                        </select>
+                    </div>
+                    <h3>Formas de Onda - Tensão e Corrente (4 Ciclos)</h3>
+                    <canvas id="waveformsChart"></canvas>
+                </div>
+
+                <!-- Gráfico de Espectro de Frequência -->
+                <div class="chart-container">
+                    <h3>Espectro de Frequência</h3>
+                    <canvas id="spectrumChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Seção de Teoria -->
+            <section class="theory-section">
+                <h2>Teoria sobre THD - Distorção Harmônica Total</h2>
+                
+                <div class="theory-content">
+                    <div class="theory-card">
+                        <h3>📚 Conceitos Fundamentais</h3>
+                        <p>A <strong>Distorção Harmônica Total (THD)</strong> é uma medida da distorção presente em sinais elétricos, indicando o quanto um sinal se desvia de uma forma de onda senoidal pura. Em sistemas elétricos, tanto a tensão quanto a corrente podem apresentar distorções harmônicas.</p>
+                        
+                        <h4>🔍 O que são Harmônicas?</h4>
+                        <p>Harmônicas são componentes de frequência que são múltiplos inteiros da frequência fundamental (60 Hz no Brasil). Por exemplo:</p>
+                        <ul>
+                            <li><strong>1ª Harmônica (Fundamental):</strong> 60 Hz</li>
+                            <li><strong>2ª Harmônica:</strong> 120 Hz</li>
+                            <li><strong>3ª Harmônica:</strong> 180 Hz</li>
+                            <li><strong>5ª Harmônica:</strong> 300 Hz</li>
+                            <li><strong>7ª Harmônica:</strong> 420 Hz</li>
+                        </ul>
+                    </div>
+
+                    <div class="theory-card">
+                        <h3>⚡ THD de Corrente</h3>
+                        <h4>📊 Definição Matemática</h4>
+                        <div class="formula">
+                            <p><strong>THD<sub>I</sub> = (√(Σ I²<sub>h</sub>) / I<sub>1</sub>) × 100%</strong></p>
+                            <p>Onde: I<sub>h</sub> = amplitude da harmônica h, I<sub>1</sub> = amplitude fundamental</p>
+                        </div>
+                        
+                        <h4>🎯 Causas Principais</h4>
+                        <ul>
+                            <li><strong>Cargas não lineares:</strong> Retificadores, inversores, drives de velocidade variável</li>
+                            <li><strong>Equipamentos eletrônicos:</strong> Computadores, TVs, lâmpadas LED</li>
+                            <li><strong>Transformadores:</strong> Saturação magnética</li>
+                            <li><strong>Motores:</strong> Especialmente em baixa carga</li>
+                        </ul>
+                        
+                        <h4>⚠️ Efeitos Negativos</h4>
+                        <ul>
+                            <li><strong>Sobreaquecimento:</strong> Aumento das perdas por efeito Joule</li>
+                            <li><strong>Redução da eficiência:</strong> Maior consumo de energia</li>
+                            <li><strong>Envelhecimento prematuro:</strong> Isolação e componentes</li>
+                            <li><strong>Interferência:</strong> Em equipamentos sensíveis</li>
+                            <li><strong>Fator de potência:</strong> Redução do fator de potência</li>
+                        </ul>
+                    </div>
+
+                    <div class="theory-card">
+                        <h3>🔌 THD de Tensão</h3>
+                        <h4>📊 Definição Matemática</h4>
+                        <div class="formula">
+                            <p><strong>THD<sub>V</sub> = (√(Σ V²<sub>h</sub>) / V<sub>1</sub>) × 100%</strong></p>
+                            <p>Onde: V<sub>h</sub> = amplitude da harmônica h, V<sub>1</sub> = amplitude fundamental</p>
+                        </div>
+                        
+                        <h4>🎯 Causas Principais</h4>
+                        <ul>
+                            <li><strong>Distorção de corrente:</strong> A corrente distorcida causa queda de tensão harmônica</li>
+                            <li><strong>Impedância do sistema:</strong> Maior impedância = maior distorção de tensão</li>
+                            <li><strong>Resonância:</strong> Entre capacitores e indutores do sistema</li>
+                            <li><strong>Transformadores:</strong> Saturação e perdas</li>
+                        </ul>
+                        
+                        <h4>⚠️ Efeitos Negativos</h4>
+                        <ul>
+                            <li><strong>Falhas em equipamentos:</strong> Sensíveis a distorções</li>
+                            <li><strong>Erros de medição:</strong> Em instrumentos analógicos</li>
+                            <li><strong>Vibração mecânica:</strong> Em motores e transformadores</li>
+                            <li><strong>Ruído acústico:</strong> Zumbidos em equipamentos</li>
+                            <li><strong>Flicker:</strong> Variação de luminosidade em lâmpadas</li>
+                        </ul>
+                    </div>
+
+                    <div class="theory-card">
+                        <h3>📋 Limites e Normas</h3>
+                        <h4>🏭 Padrões Internacionais</h4>
+                        <ul>
+                            <li><strong>IEEE 519:</strong> THD<sub>V</sub> ≤ 5% (sistemas industriais)</li>
+                            <li><strong>IEC 61000-3-2:</strong> Limites para equipamentos</li>
+                            <li><strong>ANSI C84.1:</strong> THD<sub>V</sub> ≤ 5% (distribuição)</li>
+                        </ul>
+                        
+                        <h4>🇧🇷 Normas Brasileiras</h4>
+                        <ul>
+                            <li><strong>PRODIST:</strong> THD<sub>V</sub> ≤ 10% (distribuição)</li>
+                            <li><strong>ANEEL:</strong> Regulamentações de qualidade</li>
+                        </ul>
+                        
+                        <h4>📊 Classificação da Qualidade</h4>
+                        <div class="quality-table">
+                            <table>
+                                <tr>
+                                    <th>THD (%)</th>
+                                    <th>Classificação</th>
+                                    <th>Impacto</th>
+                                </tr>
+                                <tr>
+                                    <td>0 - 5</td>
+                                    <td>Excelente</td>
+                                    <td>Mínimo</td>
+                                </tr>
+                                <tr>
+                                    <td>5 - 10</td>
+                                    <td>Boa</td>
+                                    <td>Baixo</td>
+                                </tr>
+                                <tr>
+                                    <td>10 - 20</td>
+                                    <td>Aceitável</td>
+                                    <td>Moderado</td>
+                                </tr>
+                                <tr>
+                                    <td>> 20</td>
+                                    <td>Ruim</td>
+                                    <td>Alto</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="theory-card">
+                        <h3>🛠️ Medidas de Mitigação</h3>
+                        <h4>🔧 Filtros Passivos</h4>
+                        <ul>
+                            <li><strong>Filtros sintonizados:</strong> Para harmônicas específicas</li>
+                            <li><strong>Filtros passa-baixa:</strong> Para múltiplas harmônicas</li>
+                            <li><strong>Reatores:</strong> Para limitar corrente harmônica</li>
+                        </ul>
+                        
+                        <h4>⚡ Filtros Ativos</h4>
+                        <ul>
+                            <li><strong>Compensadores estáticos:</strong> SVC, STATCOM</li>
+                            <li><strong>Filtros ativos:</strong> Para compensação dinâmica</li>
+                            <li><strong>Inversores:</strong> Com controle de harmônicas</li>
+                        </ul>
+                        
+                        <h4>🏗️ Medidas de Projeto</h4>
+                        <ul>
+                            <li><strong>Transformadores:</strong> Com maior capacidade</li>
+                            <li><strong>Cabos:</strong> Dimensionamento adequado</li>
+                            <li><strong>Neutro:</strong> Condutor neutro sobredimensionado</li>
+                            <li><strong>Proteções:</strong> Relés sensíveis a harmônicas</li>
+                        </ul>
+                    </div>
+
+                    <div class="theory-card">
+                        <h3>📈 Monitoramento e Análise</h3>
+                        <h4>📊 Parâmetros Importantes</h4>
+                        <ul>
+                            <li><strong>THD de Corrente:</strong> Indica carga do sistema</li>
+                            <li><strong>THD de Tensão:</strong> Indica qualidade da alimentação</li>
+                            <li><strong>Fator de Crista:</strong> Relação pico/RMS</li>
+                            <li><strong>Fator de Potência:</strong> Eficiência energética</li>
+                            <li><strong>Espectro Harmônico:</strong> Distribuição das harmônicas</li>
+                        </ul>
+                        
+                        <h4>🔍 Ferramentas de Análise</h4>
+                        <ul>
+                            <li><strong>Analisadores de rede:</strong> Medição em tempo real</li>
+                            <li><strong>Osciloscópios:</strong> Visualização das formas de onda</li>
+                            <li><strong>Software de simulação:</strong> Análise preditiva</li>
+                            <li><strong>Relatórios periódicos:</strong> Acompanhamento de tendências</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
