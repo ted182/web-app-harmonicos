@@ -34,9 +34,87 @@ header p {
     opacity: 0.9;
 }
 
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.back-btn:active {
+    transform: translateY(0);
+}
+
+.back-btn span {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
 .main-content {
     display: grid;
     gap: 30px;
+}
+
+/* Layout de Duas Colunas */
+.two-column-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.right-column .charts-section {
+    height: fit-content;
+}
+
+.right-column .chart-container {
+    margin-bottom: 25px;
+}
+
+.right-column .chart-container:last-child {
+    margin-bottom: 0;
+}
+
+/* Destaque especial para o gráfico de formas de onda */
+.chart-container:first-child {
+    padding: 25px;
+    border: 2px solid #667eea;
+    background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+}
+
+.chart-container:first-child h3 {
+    font-size: 1.2rem;
+    color: #2d3748;
+    margin-bottom: 20px;
 }
 
 section {
@@ -200,33 +278,30 @@ section h3 {
 
 .chart-container {
     background: #f8fafc;
-    border-radius: 12px;
     padding: 20px;
+    border-radius: 12px;
     border: 1px solid #e2e8f0;
 }
 
 .chart-container h3 {
     color: #4a5568;
     margin-bottom: 15px;
-    text-align: center;
     font-size: 1.1rem;
 }
 
 .chart-container canvas {
-    max-height: 400px;
     width: 100% !important;
     height: auto !important;
-}
-
-/* Estilos específicos para linhas mais finas */
-#waveformsChart {
-    filter: contrast(1.1);
-}
-
-/* Forçar linhas mais finas via CSS */
-.chart-container canvas {
+    max-height: 300px;
+    border-radius: 8px;
+    background: white;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
+}
+
+#waveformsChart {
+    max-height: 500px;
+    filter: contrast(1.1);
 }
 
 /* Seção de Teoria */
@@ -405,6 +480,22 @@ section h3 {
         font-size: 2rem;
     }
     
+    .back-btn {
+        font-size: 0.9rem;
+        padding: 10px 16px;
+        margin-top: 15px;
+    }
+    
+    .two-column-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .left-column,
+    .right-column {
+        gap: 20px;
+    }
+    
     .input-grid {
         grid-template-columns: 1fr;
     }
@@ -465,6 +556,12 @@ section h3 {
     
     .results-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .back-btn {
+        font-size: 0.85rem;
+        padding: 8px 14px;
+        margin-top: 12px;
     }
     
     section {
